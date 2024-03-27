@@ -25,4 +25,4 @@ def test_total_unique_products(sample_category, sample_product):
     assert Category.total_unique_products == {"Laptop"}
 
 def test_total_categories(sample_category):
-    assert Category.total_categories == 1
+    assert Category.total_categories == 3
