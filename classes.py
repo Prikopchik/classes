@@ -1,6 +1,6 @@
 class Category:
     total_categories = 0
-    total_unique_products = set()
+    total_unique_products = 0
 
     def __init__(self, name, description):
         self.name = name
@@ -10,13 +10,13 @@ class Category:
 
     def add_product(self, product):
         self.__products.append(product)
-        Category.total_unique_products.add(product.name)
+        Category.total_unique_products += 1
 
     @property
     def products(self):
-        result = ""
+        result = []
         for product in self.__products:
-            result += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
         return result
 
 
@@ -29,8 +29,8 @@ class Product:
         self.quantity = quantity
 
     @classmethod
-    def create_product(cls, name, description, price, quantity):
-        return cls(name, description, price, quantity)
+    def create_product(cls, data):
+        return cls(**data)
 
     @property
     def price(self):
@@ -42,4 +42,3 @@ class Product:
             print("Ошибка: введена некорректная цена.")
         else:
             self.__price = new_price
-
