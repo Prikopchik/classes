@@ -9,6 +9,8 @@ class Category:
         Category.total_categories += 1
 
     def add_product(self, product):
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавить только объекты класса Product или его наследников")
         self.__products.append(product)
         Category.total_unique_products += 1
 
@@ -38,6 +40,8 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
     
     def __add__(self, other):
+        if type(self) != type(other):
+            raise TypeError("Нельзя складывать товары разных классов")
         total_price_self = self.price * self.quantity
         total_price_other = other.price * other.quantity
         return total_price_self + total_price_other
@@ -56,3 +60,18 @@ class Product:
             print("Ошибка: введена некорректная цена.")
         else:
             self.__price = new_price
+
+class Smartphone(Product):
+    def __init__(self, name, price, quantity, performance, model, memory, color):
+        super().__init__(name, price, quantity, category="Смартфон")
+        self.performance = performance
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+class LawnGrass(Product):
+    def __init__(self, name, price, quantity, country_of_origin, germination_period, color):
+        super().__init__(name, price, quantity, category="Трава газонная")
+        self.country_of_origin = country_of_origin
+        self.germination_period = germination_period
+        self.color = color
