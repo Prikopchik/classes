@@ -11,6 +11,12 @@ class ObjectCreationLoggerMixin:
         print(f"Создан объект класса {class_name}: {attributes}")
 
 
+class AbstractProduct(ABC):
+    @abstractmethod
+    def additional_info(self):
+        pass
+
+
 class Category(ObjectCreationLoggerMixin):
     total_categories = 0
     total_unique_products = 0
@@ -43,7 +49,7 @@ class Category(ObjectCreationLoggerMixin):
         return total_quantity
 
 
-class Product(ObjectCreationLoggerMixin, ABC):
+class Product(ObjectCreationLoggerMixin, AbstractProduct):
     def __init__(self, name, description, price, quantity):
         super().__init__(name, description, price, quantity)
         self.name = name
