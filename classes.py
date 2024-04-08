@@ -31,6 +31,8 @@ class Category(ObjectCreationLoggerMixin):
     def add_product(self, product):
         if not isinstance(product, Product):
             raise TypeError("Можно добавить только объекты класса Product или его наследников")
+        if product.quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.__products.append(product)
         Category.total_unique_products += 1
 
@@ -47,6 +49,13 @@ class Category(ObjectCreationLoggerMixin):
     def __len__(self):
         total_quantity = sum(product.quantity for product in self.__products)
         return total_quantity
+
+    def average_price(self):
+        try:
+            total_price = sum(product.price for product in self.__products)
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0
 
 
 class Product(ObjectCreationLoggerMixin, AbstractProduct):
