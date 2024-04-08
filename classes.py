@@ -1,8 +1,22 @@
-class Category:
+from abc import ABC,abstractmethod
+
+class ObjectCreationLoggerMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.log_object_creation()
+
+    def log_object_creation(self):
+        class_name = self.__class__.__name__
+        attributes = ", ".join([f"{key}={value}" for key, value in self.__dict__.items()])
+        print(f"Создан объект класса {class_name}: {attributes}")
+
+
+class Category(ObjectCreationLoggerMixin):
     total_categories = 0
     total_unique_products = 0
 
     def __init__(self, name, description):
+        super().__init__(name, description)
         self.name = name
         self.description = description
         self.__products = []
@@ -29,8 +43,9 @@ class Category:
         return total_quantity
 
 
-class Product:
+class Product(ObjectCreationLoggerMixin, ABC):
     def __init__(self, name, description, price, quantity):
+        super().__init__(name, description, price, quantity)
         self.name = name
         self.description = description
         self.__price = price
@@ -61,6 +76,10 @@ class Product:
         else:
             self.__price = new_price
 
+    @abstractmethod
+    def additional_info(self):
+        pass
+
 class Smartphone(Product):
     def __init__(self, name, price, quantity, performance, model, memory, color):
         super().__init__(name, price, quantity, category="Смартфон")
@@ -68,6 +87,9 @@ class Smartphone(Product):
         self.model = model
         self.memory = memory
         self.color = color
+    
+    def additional_info(self):
+        return f"Производительность: {self.performance}, Модель: {self.model}, Память: {self.memory}, Цвет: {self.color}"
 
 class LawnGrass(Product):
     def __init__(self, name, price, quantity, country_of_origin, germination_period, color):
@@ -75,3 +97,6 @@ class LawnGrass(Product):
         self.country_of_origin = country_of_origin
         self.germination_period = germination_period
         self.color = color
+
+    def additional_info(self):
+        return f"Страна-производитель: {self.country_of_origin}, Срок прорастания: {self.germination_period}, Цвет: {self.color}"
