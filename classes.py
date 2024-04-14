@@ -91,9 +91,8 @@ class Product(ObjectCreationLoggerMixin, AbstractProduct):
         else:
             self.__price = new_price
 
-    @abstractmethod
     def additional_info(self):
-        pass
+        return "Дополнительная информация отсутствует"
 
 class Smartphone(Product):
     def __init__(self, name, price, quantity, performance, model, memory, color):
